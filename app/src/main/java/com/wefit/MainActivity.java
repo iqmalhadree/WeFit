@@ -2,7 +2,10 @@ package com.wefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -11,6 +14,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -19,11 +23,18 @@ public class MainActivity extends AppCompatActivity {
     //private BarChart chart;
     //private XAxis x;
 
+    private FloatingActionButton userInfoBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setChart();
+
+    }
+
+    public void setChart(){
         BarChart chart = findViewById(R.id.chart_bar);
 
         BarDataSet barDataSet1 = new BarDataSet(values(), "DataSet 1");
@@ -34,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         barData.setValueTextColor(R.color.darkbrown);
         barDataSet1.setColor(R.color.darkbrown);
         barDataSet1.setDrawValues(false);
-
 
         chart.setDrawBorders(false);
         chart.setDescription(null);
@@ -60,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
         chart.getAxisRight().setDrawGridLines(false);
         chart.getAxisLeft().setDrawGridLines(false);
         chart.getXAxis().setDrawGridLines(false);
+    }
+
+    public void openUserAct(View v){
+        Intent intent = new Intent(this, AddInfo.class);
+        startActivity(intent);
     }
 
     private ArrayList<BarEntry> values(){
