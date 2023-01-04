@@ -1,6 +1,7 @@
 package com.wefit;
 
 public class FoodModel {
+    //private String date;
     private String day;
     private int calAmount;
 

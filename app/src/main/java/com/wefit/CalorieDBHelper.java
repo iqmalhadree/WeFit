@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CalorieDBHelper extends SQLiteOpenHelper {
@@ -65,19 +66,35 @@ public class CalorieDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void addDummy(String name, int amount, String date, String day){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "INSERT INTO " + TABLE_NAME + " (" +
+                COLUMN_FOOD_NAME + ", " +
+                COLUMN_AMOUNT + ", " +
+                COLUMN_ENTRY_DATE + ", " +
+                COLUMN_ENTRY_DAY + ") " +
+                "VALUES (" +
+                name + ", " +
+                amount + ", " +
+                date + ", " +
+                day + "); ";
+        db.execSQL(query);
+    }
 
-    public List<FoodModel> sumCal(){
+
+    public List<FoodModel> sumCal(String dateQuery){
         SQLiteDatabase db = this.getReadableDatabase();
         List<FoodModel> amountList = new ArrayList<FoodModel>();
 
-        String query = "SELECT " + COLUMN_ENTRY_DAY + ", SUM(" + COLUMN_AMOUNT + ") " +
+        String query = "SELECT " + COLUMN_ENTRY_DATE + ", " + COLUMN_ENTRY_DAY + ", SUM(" + COLUMN_AMOUNT + ") " +
                         "FROM " + TABLE_NAME +
-                        " GROUP BY " + COLUMN_ENTRY_DAY + ";";
+                        " GROUP BY " + COLUMN_ENTRY_DATE +
+                        " HAVING " + COLUMN_ENTRY_DATE + " =\"" + dateQuery + "\";";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
             do{
-                String day = cursor.getString(0);
-                int value = cursor.getInt(1);
+                String day = cursor.getString(1);
+                int value = cursor.getInt(2);
                 FoodModel fm = new FoodModel(day, value);
                 amountList.add(fm);
 
