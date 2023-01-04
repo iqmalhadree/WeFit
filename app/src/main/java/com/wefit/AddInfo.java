@@ -2,6 +2,7 @@ package com.wefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddInfo extends AppCompatActivity {
 
@@ -51,7 +53,7 @@ public class AddInfo extends AppCompatActivity {
         typeGender = findViewById(gender.getCheckedRadioButtonId());
         degActive = findViewById(active.getCheckedRadioButtonId());
 
-        UserDBHelper myDB = new UserDBHelper(AddInfo.this);
+        MyDBHelper myDB = new MyDBHelper(AddInfo.this);
         myDB.addUser(
                     ti_name.getText().toString(),
                     Integer.valueOf(ti_age.getText().toString()),
