@@ -2,11 +2,15 @@ package com.wefit;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyDBHelper extends SQLiteOpenHelper {
 
@@ -41,11 +45,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXIST " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
-    void addUser(String name, int age, int height, int weight, String gender, String fitness){
+    public void addUser(String name, int age, int height, int weight, String gender, String fitness){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -63,4 +67,22 @@ public class MyDBHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
         }
     }
+    public User extractUserDB(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_NAME + ";";
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        int age = cursor.getInt(1);
+        int weight = cursor.getInt(2);
+        int height = cursor.getInt(3);
+        String gender = cursor.getString(4);
+        String fitness = cursor.getString(5);
+
+        User data = new User(weight, height, age, gender, fitness);
+        return data;
+    }
+
+
 }

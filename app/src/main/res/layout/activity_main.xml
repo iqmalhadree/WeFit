@@ -10,19 +10,18 @@
 
     <TextView
         android:id="@+id/calCount"
-        android:layout_width="274dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="347dp"
+        android:layout_height="192dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/cal_count_bg"
         android:fontFamily="@font/montserrat_alternates_medium"
         android:includeFontPadding="true"
         android:lineSpacingExtra="0dp"
-        android:text="000"
+        android:text="0000"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="100sp"
+        android:textSize="110sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,15 +29,14 @@
         android:id="@+id/dateToday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/montserrat_alternates_medium"
         android:text="1 Jan 2023"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/calCount"
+        app:layout_constraintStart_toStartOf="@+id/calCount"
         app:layout_constraintTop_toTopOf="@+id/calCount" />
 
     <TextView
@@ -50,103 +48,96 @@
         android:text="kcal"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/calCount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="285dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="44dp"
         android:progress="40"
         android:progressDrawable="@drawable/custom_progress_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calCount" />
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
-        android:layout_width="0dp"
-        android:layout_height="108dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="BottomAppBar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:onClick="addCalIntake"
+        android:scaleType="center"
+        app:fabCustomSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonInfo"
         app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
         app:layout_constraintVertical_bias="0.519"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_input_add" />
+
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart_bar"
-        android:layout_width="310dp"
-        android:layout_height="262dp"
-        android:layout_margin="50dp"
-        android:foregroundTint="#F1E9D2"
+        android:layout_width="377dp"
+        android:layout_height="351dp"
+        android:layout_margin="0dp"
+        android:foregroundTint="@color/peach"
         app:layout_constraintBottom_toTopOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        app:layout_constraintVertical_bias="0.408">
-
-
-    </com.github.mikephil.charting.charts.BarChart>
-
-    <TextView
-        android:id="@+id/day_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_alternates_medium"
-        android:text="      MON           TUE          WED          THU         FRI           SAT           SUN"
-        android:textColor="@color/darkbrown"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/chart_bar"
-        app:layout_constraintStart_toStartOf="@+id/chart_bar"
-        app:layout_constraintTop_toBottomOf="@+id/chart_bar" />
+        app:layout_constraintVertical_bias="0.593"></com.github.mikephil.charting.charts.BarChart>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="68dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:onClick="openUserAct"
+        app:fabCustomSize="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
         app:layout_constraintVertical_bias="0.519"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/scanFoodButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        app:fabCustomSize="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bottomAppBar" />
+        app:layout_constraintTop_toTopOf="@+id/bottomAppBar"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

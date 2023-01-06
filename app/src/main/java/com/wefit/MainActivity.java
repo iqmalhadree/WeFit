@@ -3,9 +3,12 @@ package com.wefit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -13,6 +16,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,12 +28,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_cal;
     private TextView tv_todayDate;
     private TextView test;
+    private ProgressBar progressBar;
     private String dateParam;
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assignWidget();
+        getUserDB();
 
         DisplayDateToday();
         dateParam = setDateToday();
@@ -37,9 +44,62 @@ public class MainActivity extends AppCompatActivity {
         try {
             showCalAmountResult(dateParam);
             setChart();
+            setBarProgress(user);
         }catch (Exception e){
             //ignore
         }
+
+    }
+
+    private void getUserDB() {
+        MyDBHelper dbHelper = new MyDBHelper(MainActivity.this);
+        user = dbHelper.extractUserDB();
+    }
+
+    private void setBarProgress(User user) {
+        CalorieDBHelper calorieDBHelper = new CalorieDBHelper(MainActivity.this);
+        String gender = this.user.getUserGender();
+        String fitness = this.user.getUserFitness();
+        double BMR = 0;
+        double calNeed = 0;
+        double progress;
+        int progress_int;
+        
+        if(gender.equalsIgnoreCase("female") == true){
+            BMR =  655.1 + (9.563 * user.getUserWeight()) + (1.850 * user.getUserHeight()) - (4.676 * user.getUserAge());
+        }
+        else if(gender.equalsIgnoreCase("male") == true){
+            BMR = 66.5 + (13.75 * user.getUserWeight()) + (5.003 * user.getUserHeight()) - (6.75 * user.getUserAge());
+            test.setText(String.valueOf(user.getUserAge()));
+        }
+        else {
+            Toast.makeText(this, "User Info has not been set", Toast.LENGTH_SHORT).show();
+        }
+
+        if(fitness.equalsIgnoreCase("very active") == true){
+            calNeed = 1.9 * BMR;
+        }
+
+        else if(fitness.equalsIgnoreCase("active") == true){
+            calNeed = 1.725 * BMR;
+        }
+
+        else if(fitness.equalsIgnoreCase("normal") == true){
+            calNeed = 1.375 * BMR;
+        }
+
+        else if(fitness.equalsIgnoreCase("passive") == true){
+            calNeed = 1.2 * BMR;
+        }
+
+        else{
+            Toast.makeText(this, "No information on Fitness Level", Toast.LENGTH_SHORT).show();
+        }
+
+        progress = calorieDBHelper.sumCal(dateParam).get(0).getCalAmount()/calNeed * 100;
+
+        progress_int = (int)Math.round(progress);
+        progressBar.setProgress(progress_int);
 
     }
 
@@ -47,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv_cal = findViewById(R.id.calCount);
         tv_todayDate = findViewById(R.id.dateToday);
-        test = findViewById(R.id.test);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void DisplayDateToday() {
         Date date = new Date();
         SimpleDateFormat f = new SimpleDateFormat("dd MMM yyyy");
-        String showToday = String.valueOf(f.format(date));
+        String showToday = f.format(date);
         tv_todayDate.setText(showToday);
     }
 
@@ -64,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
             case 1: {
                 onRestart();
                 showCalAmountResult(dateParam);
+                setChart();
+                setBarProgress(user);
                 break;
             }
             case 2:
@@ -74,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private String setDateToday(){
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
-        return String.valueOf(formatterDate.format(date));
+        return formatterDate.format(date);
     }
 
     private void showCalAmountResult(String date) {
@@ -91,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         barData.addDataSet(barDataSet1);
         barData.setBarWidth(0.3f);
         barData.setValueTextColor(R.color.darkbrown);
-        barDataSet1.setColor(R.color.darkbrown);
+        barDataSet1.setColor(Color.parseColor("#F4991A"));
         barDataSet1.setDrawValues(false);
 
         chart.setDrawBorders(false);
@@ -104,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
         XAxis xAxis= chart.getXAxis();
         xAxis.setDrawAxisLine(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawLabels(false);
+        xAxis.setDrawLabels(true);
+        final String[] weekdays = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(weekdays));
 
         YAxis yl = chart.getAxisLeft();
         YAxis yr = chart.getAxisRight();
@@ -135,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
         CalorieDBHelper calDB = new CalorieDBHelper(MainActivity.this);
 
         String[] dateWeek = getDateWeek();
-        test.setText(dateWeek[5]);
 
         for(int i=0; i<7; i++){
             if (dateWeek[i] != null) {
@@ -162,12 +225,12 @@ public class MainActivity extends AppCompatActivity {
 
         String[] allDate = new String[7];
 
-        allDate[0] = String.valueOf(formatterDate.format(lastWeekDate));
+        allDate[0] = formatterDate.format(lastWeekDate);
         for(int j=0; j<i; j++){
             c2.add(Calendar.DATE, 1);
-            Date newDate = new Date();
+            Date newDate;
             newDate = c2.getTime();
-            allDate[j] = String.valueOf(formatterDate.format(newDate));
+            allDate[j] = formatterDate.format(newDate);
         }
 
         return allDate;
