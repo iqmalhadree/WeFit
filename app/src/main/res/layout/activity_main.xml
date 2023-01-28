@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/peach"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
 
@@ -60,7 +60,6 @@
         android:layout_width="285dp"
         android:layout_height="30dp"
         android:layout_marginTop="44dp"
-        android:progress="40"
         android:progressDrawable="@drawable/custom_progress_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -132,6 +131,7 @@
         android:layout_height="40dp"
         android:backgroundTint="@color/white"
         android:clickable="true"
+        android:onClick="scanFoodActivity"
         app:fabCustomSize="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/bottomAppBar"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"

@@ -2,126 +2,282 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.WeFit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/peach"
+    android:backgroundTint="@color/peach"
     tools:context=".AddInfo">
 
-    <EditText
-        android:id="@+id/userHeightInput"
+    <TextView
+        android:id="@+id/messageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Height"
-        android:inputType="number"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/montserrat_alternates_medium"
+        android:text="Before we start, Let us know"
+        android:textColor="@color/darkbrown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userWeightInput" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/nameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/messageText"
+        android:layout_marginTop="55dp">
+
+        <TextView
+            android:id="@+id/nameIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="NAME:  " />
+
+        <EditText
+            android:id="@+id/userNameInput"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:ems="12"
+            android:inputType="textPersonName"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/text_input_border"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/nameLayout"
+        android:layout_marginTop="55dp">
+
+        <TextView
+            android:id="@+id/ageIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="AGE:    " />
+
+        <EditText
+            android:id="@+id/userAgeInput"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:ems="12"
+            android:inputType="textPersonName"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/text_input_border"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/genderSizeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/ageLayout">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:padding="25dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="State your gender"
+                android:textColor="@color/orange"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/radioGender">
+
+                <RadioButton
+                    android:id="@+id/buttonMale"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/buttonFemale"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Female" />
+            </RadioGroup>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="25dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Body Size                 "
+                android:textColor="@color/orange"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weight (kg):  " />
+                <EditText
+                    android:id="@+id/userWeightInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_input_border"
+                    android:ems="2"
+                    android:inputType="number" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Height (m):    " />
+
+                <EditText
+                    android:id="@+id/userHeightInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/text_input_border"
+                    android:ems="2"
+                    android:inputType="number" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fitness Level"
+        android:textAlignment="center"
+        android:textColor="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genderSizeLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/radioActive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/buttonActive4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Extra Active" />
+
+                <RadioButton
+                    android:id="@+id/buttonActive3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Very Active" />
+
+                <RadioButton
+                    android:id="@+id/buttonActive2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Moderately Active" />
+
+                <RadioButton
+                    android:id="@+id/buttonActive1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Lightly Active" />
+
+                <RadioButton
+                    android:id="@+id/buttonActive0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Passive" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:text="(heavy daily physical
+                    exercise / work load)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:text="(More than recommended)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:text="(Recommended exercises)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:text="(Rarely have outdoor
+                        activity)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:text="(Once a while have exercise)" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/userSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="submit"
+        android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioActive" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.297" />
 
-    <RadioGroup
-        android:id="@+id/radioActive"
-        android:layout_width="250dp"
-        android:layout_height="194dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGender">
-
-        <RadioButton
-            android:id="@+id/buttonActive4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Very Active" />
-
-        <RadioButton
-            android:id="@+id/buttonActive3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Active" />
-
-        <RadioButton
-            android:id="@+id/buttonActive2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Normal" />
-
-        <RadioButton
-            android:id="@+id/buttonActive1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Passive" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/radioGender"
-        android:layout_width="246dp"
-        android:layout_height="87dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userHeightInput">
-
-        <RadioButton
-            android:id="@+id/buttonMale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Male" />
-
-        <RadioButton
-            android:id="@+id/buttonFemale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Female" />
-    </RadioGroup>
-
-    <EditText
-        android:id="@+id/userAgeInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Age"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNameInput" />
-
-    <EditText
-        android:id="@+id/userWeightInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="weight"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userAgeInput" />
-
-    <EditText
-        android:id="@+id/userNameInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

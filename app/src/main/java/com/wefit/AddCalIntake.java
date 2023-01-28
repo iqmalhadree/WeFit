@@ -2,6 +2,7 @@ package com.wefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,8 @@ public class AddCalIntake extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setCal();
+                Intent intent = new Intent(AddCalIntake.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -62,20 +65,16 @@ public class AddCalIntake extends AppCompatActivity {
     }
     public void setCalDummy(){
         CalorieDBHelper myDB = new CalorieDBHelper(AddCalIntake.this);
-        myDB.addCal("Burger", 300, "2022-12-28", "Wednesday");
-        myDB.addCal("Burger", 400, "2022-12-29", "Thursday");
-        myDB.addCal("Burger", 500, "2022-12-30", "Friday");
-        myDB.addCal("Burger", 600, "2022-12-31", "Saturday");
-        myDB.addCal("Burger", 50, "2023-01-01", "Sunday");
-        myDB.addCal("Burger", 100, "2023-01-02", "Monday");
-        myDB.addCal("Burger", 150, "2023-01-03", "Tuesday");
-        myDB.addCal("Burger", 200, "2023-01-04", "Wednesday");
-        myDB.addCal("Burger", 400, "2023-01-05", "Thursday");
-        myDB.addCal("Burger", 500, "2023-01-06", "Friday");
-        myDB.addCal("Burger", 600, "2022-01-07", "Saturday");
-        myDB.addCal("Burger", 50, "2023-01-08", "Sunday");
-        myDB.addCal("Burger", 100, "2023-01-09", "Monday");
-        myDB.addCal("Burger", 150, "2023-01-10", "Tuesday");
-        myDB.addCal("Burger", 200, "2023-01-11", "Wednesday");
+        myDB.addCal("Burger", 50, "2023-01-24", "Tuesday");
+        myDB.addCal("Burger", 100, "2023-01-24", "Tuesday");
+        myDB.addCal("Burger", 150, "2023-01-23", "Monday");
+        myDB.addCal("Burger", 200, "2023-01-23", "Monday");
+        myDB.addCal("Burger", 400, "2023-01-22", "Sunday");
+        myDB.addCal("Burger", 500, "2023-01-22", "Sunday");
+        myDB.addCal("Burger", 600, "2022-01-21", "Saturday");
+        myDB.addCal("Burger", 50, "2022-01-21", "Saturday");
+        myDB.addCal("Burger", 100, "2023-01-20", "Friday");
+        myDB.addCal("Burger", 150, "2023-01-20", "Friday");
+
     }
 }

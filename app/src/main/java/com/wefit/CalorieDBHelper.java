@@ -107,4 +107,22 @@ public class CalorieDBHelper extends SQLiteOpenHelper {
         db.close();
         return amountList;
     }
+
+    public Boolean noTable(){
+        int value;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        value = cursor.getInt(0);
+        cursor.close();
+        if(value==0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

@@ -27,37 +27,44 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_cal;
     private TextView tv_todayDate;
-    private TextView test;
     private ProgressBar progressBar;
     private String dateParam;
     User user = new User();
+    CalorieDBHelper calorieDBHelper = new CalorieDBHelper(MainActivity.this);
+    MyDBHelper myDBHelper = new MyDBHelper(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assignWidget();
-        getUserDB();
-
-        DisplayDateToday();
         dateParam = setDateToday();
 
+        checkUserDB();
         try {
+            DisplayDateToday();
+            getUserDB();
+            setBarProgress(user);
             showCalAmountResult(dateParam);
             setChart();
-            setBarProgress(user);
+
         }catch (Exception e){
             //ignore
         }
 
     }
 
+    private void checkUserDB(){
+        if(myDBHelper.noTable()==true){
+            Intent intent = new Intent(this, AddInfo.class);
+            startActivity(intent);
+        }
+    }
+
     private void getUserDB() {
-        MyDBHelper dbHelper = new MyDBHelper(MainActivity.this);
-        user = dbHelper.extractUserDB();
+        user = myDBHelper.extractUserDB();
     }
 
     private void setBarProgress(User user) {
-        CalorieDBHelper calorieDBHelper = new CalorieDBHelper(MainActivity.this);
         String gender = this.user.getUserGender();
         String fitness = this.user.getUserFitness();
         double BMR = 0;
@@ -66,41 +73,31 @@ public class MainActivity extends AppCompatActivity {
         int progress_int;
         
         if(gender.equalsIgnoreCase("female") == true){
-            BMR =  655.1 + (9.563 * user.getUserWeight()) + (1.850 * user.getUserHeight()) - (4.676 * user.getUserAge());
-        }
+            BMR =  655.1 + (9.563 * user.getUserWeight()) + (1.850 * user.getUserHeight()) - (4.676 * user.getUserAge());}
         else if(gender.equalsIgnoreCase("male") == true){
-            BMR = 66.5 + (13.75 * user.getUserWeight()) + (5.003 * user.getUserHeight()) - (6.75 * user.getUserAge());
-            test.setText(String.valueOf(user.getUserAge()));
-        }
+            BMR = 66.5 + (13.75 * user.getUserWeight()) + (5.003 * user.getUserHeight()) - (6.75 * user.getUserAge());}
         else {
-            Toast.makeText(this, "User Info has not been set", Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(this, "User Info has not been set", Toast.LENGTH_SHORT).show();}
 
-        if(fitness.equalsIgnoreCase("very active") == true){
-            calNeed = 1.9 * BMR;
-        }
-
-        else if(fitness.equalsIgnoreCase("active") == true){
-            calNeed = 1.725 * BMR;
-        }
-
-        else if(fitness.equalsIgnoreCase("normal") == true){
-            calNeed = 1.375 * BMR;
-        }
-
+        if(fitness.equalsIgnoreCase("extra active") == true){
+            calNeed = 1.9 * BMR;}
+        else if(fitness.equalsIgnoreCase("very active") == true){
+            calNeed = 1.725 * BMR;}
+        else if(fitness.equalsIgnoreCase("moderately active") == true){
+            calNeed = 1.55 * BMR;}
+        else if(fitness.equalsIgnoreCase("lightly active") == true){
+            calNeed = 1.375 * BMR;}
         else if(fitness.equalsIgnoreCase("passive") == true){
-            calNeed = 1.2 * BMR;
-        }
-
+            calNeed = 1.2 * BMR;}
         else{
-            Toast.makeText(this, "No information on Fitness Level", Toast.LENGTH_SHORT).show();
-        }
-
+            Toast.makeText(this, "No information on Fitness Level", Toast.LENGTH_SHORT).show();}
+        int goalVal = myDBHelper.extractUserGoal();
+        final double calPerDay = 7700/30;
+        double loseCal = goalVal * calPerDay;
+        calNeed = calNeed - loseCal;
         progress = calorieDBHelper.sumCal(dateParam).get(0).getCalAmount()/calNeed * 100;
-
         progress_int = (int)Math.round(progress);
         progressBar.setProgress(progress_int);
-
     }
 
     private void assignWidget() {
@@ -117,22 +114,6 @@ public class MainActivity extends AppCompatActivity {
         tv_todayDate.setText(showToday);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1: {
-                onRestart();
-                showCalAmountResult(dateParam);
-                setChart();
-                setBarProgress(user);
-                break;
-            }
-            case 2:
-                break;
-        }
-    }
-
     private String setDateToday(){
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -140,8 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCalAmountResult(String date) {
-        CalorieDBHelper calDB = new CalorieDBHelper(MainActivity.this);
-        tv_cal.setText(String.valueOf(calDB.sumCal(date).get(0).getCalAmount()));
+        tv_cal.setText(String.valueOf(calorieDBHelper.sumCal(date).get(0).getCalAmount()));
     }
 
     public void setChart(){
@@ -185,27 +165,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openUserAct(View v){
-        Intent intent = new Intent(this, AddInfo.class);
-        startActivity(intent);
+        MyDBHelper db = new MyDBHelper(MainActivity.this);
+        if(db.noTable()==true){
+            Intent intent = new Intent(MainActivity.this, AddInfo.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(MainActivity.this, ViewInfo.class);
+            startActivity(intent);
+        }
     }
 
     public void addCalIntake(View v){
         Intent intent = new Intent(this, AddCalIntake.class);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
+    }
+
+    public void scanFoodActivity(View v){
+        Intent intent = new Intent(this, ScanFood.class);
+        startActivity(intent);
     }
 
     private ArrayList<BarEntry> valuesChart(){
         ArrayList<BarEntry> dataValues = new ArrayList<>();
-        CalorieDBHelper calDB = new CalorieDBHelper(MainActivity.this);
-
         String[] dateWeek = getDateWeek();
-
         for(int i=0; i<7; i++){
-            if (dateWeek[i] != null) {
-                dataValues.add(new BarEntry(i, Integer.valueOf(calDB.sumCal(dateWeek[i]).get(0).getCalAmount())));
+            if (calorieDBHelper.sumCal(dateWeek[i]).isEmpty() == true) {
+                dataValues.add(new BarEntry(i, 0));
             }
             else {
-                dataValues.add(new BarEntry(i, 0));
+                dataValues.add(new BarEntry(i, Integer.valueOf(calorieDBHelper.sumCal(dateWeek[i]).get(0).getCalAmount())));
             }
         }
         return dataValues;
@@ -213,26 +202,34 @@ public class MainActivity extends AppCompatActivity {
 
     private String[] getDateWeek(){
         Date date = new Date();
+        int k;
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
         SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
 
         c1.setTime(date);
         int i = c1.get(Calendar.DAY_OF_WEEK) - c1.getFirstDayOfWeek();
-        c1.add(Calendar.DATE, -i);
+        if(i==0){
+            c1.add(Calendar.DATE, -6);
+            i=7;
+            k = 1;
+        }
+        else{
+            c1.add(Calendar.DATE, -i);
+            k = 0;
+        }
         Date lastWeekDate = c1.getTime();
         c2.setTime(lastWeekDate);
 
         String[] allDate = new String[7];
 
         allDate[0] = formatterDate.format(lastWeekDate);
-        for(int j=0; j<i; j++){
+        for(int j = k; j<i; j++){
             c2.add(Calendar.DATE, 1);
             Date newDate;
             newDate = c2.getTime();
             allDate[j] = formatterDate.format(newDate);
         }
-
         return allDate;
     }
 }

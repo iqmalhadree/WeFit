@@ -24,6 +24,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HEIGHT = "user_height";
     private static final String COLUMN_GENDER = "user_gender";
     private static final String COLUMN_FITNESS = "user_fitness";
+    private static final String COLUMN_GOAL="user_goal";
     private static final String COLUMN_NAME = "user_name";
 
     public MyDBHelper(@Nullable Context context) {
@@ -39,7 +40,8 @@ public class MyDBHelper extends SQLiteOpenHelper {
                         COLUMN_WEIGHT + " INTEGER, " +
                         COLUMN_HEIGHT + " INTEGER, " +
                         COLUMN_GENDER + " TEXT, " +
-                        COLUMN_FITNESS + " TEXT);";
+                        COLUMN_FITNESS + " TEXT, " +
+                        COLUMN_GOAL + " INTEGER);";
         db.execSQL(query);
     }
 
@@ -67,6 +69,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void addGoal(String id, int goal){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(
+                "UPDATE " + TABLE_NAME + " SET " + COLUMN_GOAL + " = " + goal + " WHERE " + COLUMN_NAME + " = \'" + id + "\';"
+        );
+
+    }
     public User extractUserDB(){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -74,15 +84,62 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
+        String name = cursor.getString(0);
         int age = cursor.getInt(1);
         int weight = cursor.getInt(2);
         int height = cursor.getInt(3);
         String gender = cursor.getString(4);
         String fitness = cursor.getString(5);
-
-        User data = new User(weight, height, age, gender, fitness);
-        return data;
+        cursor.close();
+        return new User(name, weight, height, age, gender, fitness);
     }
 
+    public int extractUserGoal(){
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        String query = "SELECT " + COLUMN_GOAL + " FROM " + TABLE_NAME + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        int goal = cursor.getInt(0);
+        cursor.close();
+        return goal;
+    }
+
+    public Boolean noTable(){
+        int value;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_NAME + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        value = cursor.getInt(0);
+        cursor.close();
+        if(value==0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public Boolean noGoal(){
+        int value;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT COUNT(" + COLUMN_GOAL + ") FROM " + TABLE_NAME + ";";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        value = cursor.getInt(0);
+        cursor.close();
+        if(value==0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public void deleteRows(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME + ";";
+        db.execSQL(query);
+    }
 }

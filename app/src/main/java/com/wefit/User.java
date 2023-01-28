@@ -7,10 +7,17 @@ public class User{
     private int userWeight;
     private int userHeight;
     private int userAge;
+    private int userGoal;
     private String userGender;
     private String userFitness;
+    private String userName;
 
     public User() {
+        userWeight = 0;
+        userHeight = 0;
+        userAge = 0;
+        userGender = null;
+        userFitness = null;
     }
 
     public void setUserGender(String userGender) {
@@ -36,7 +43,8 @@ public class User{
                 '}';
     }
 
-    public User(int userWeight, int userHeight, int userAge, String userGender, String userFitness) {
+    public User(String userName, int userWeight, int userHeight, int userAge, String userGender, String userFitness) {
+        this.userName = userName;
         this.userWeight = userWeight;
         this.userHeight = userHeight;
         this.userAge = userAge;
@@ -74,6 +82,22 @@ public class User{
 
     public void setGender(String userGender) {
         this.userGender = userGender;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getUserGoal() {
+        return userGoal;
+    }
+
+    public void setUserGoal(int userGoal) {
+        this.userGoal = userGoal;
     }
 }
 
